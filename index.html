@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;500&display=swap" rel="stylesheet">
+  <title>Pulverbeschichten Rechner</title>
+</head>
+  <style>
+    body {
+      background-color: #F6F5F3;
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+    }
+
+
+
+    header{
+      background-color: #F29200;
+      padding: 24px 10%;
+      font-size: 24px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      padding: 10%;
+     
+      
+    }
+
+    #resultContainer{
+      font-size: 32px;
+    }
+    button{
+      background-color: #F29200;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 20px;
+    }
+
+    input {
+  font-size: 20px;
+  padding: 5px;
+}
+
+  </style>
+
+
+
+<body>
+  <header>Pulverbeschichten Rechner</header>
+  <form onsubmit="calculateCost(); return false;">
+    <input id="powder" required type="number" step="0.01" placeholder="Pulvergewicht (g)">
+    <input id="workTime" type="number" placeholder="Arbeitszeit (Minuten)">
+    <input id="oven" type="number" placeholder="Ofen (Prozent)">
+    <button>Berechnen</button>
+    <div id="resultContainer" ></div>
+  </form>
+
+  <script>
+    function calculateCost() {
+      const powderWeight = +document.getElementById('powder').value;
+      const workTimeInMinutes = +document.getElementById('workTime').value;
+      const ovenPercentage = +document.getElementById('oven').value;
+      const standardOvenTimeInMinutes = 35;
+      const powderCostPerGram = 13 / 1000;
+      const hourlyRate = 1.08;
+      const ovenCostAt100Percent = 35;
+      const ovenTimeInMinutes = standardOvenTimeInMinutes * (ovenPercentage / 100);
+      const ovenCost = (ovenCostAt100Percent / 100) * ovenPercentage;
+
+      const powderCost = powderWeight * powderCostPerGram;
+      const workCost = workTimeInMinutes * hourlyRate;
+
+      const totalCost = powderCost + workCost + ovenCost;
+
+      document.getElementById('resultContainer').innerHTML = `Kosten: ${totalCost.toFixed(2)} €`;
+    }
+  </script>
+</body>
+
+</html>
