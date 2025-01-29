@@ -1,126 +1,239 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;500&display=swap"
-      rel="stylesheet"
-    />
-    <title>Pulverbeschichten Rechner</title>
+    <title>Kostenaufstellung Rechner</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f6f5f3;
+        margin: 0;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 20px;
+      }
+      h1 {
+        color: #333;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+      form {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+      }
+      .group {
+        margin-bottom: 15px;
+      }
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+      input {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #f29200;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        margin-top: 10px;
+      }
+      button:hover {
+        background-color: #d87c00;
+      }
+      #resultContainer {
+        margin-top: 20px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .result-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 16px;
+      }
+      .result-row.total {
+        font-weight: bold;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 2px solid #eee;
+      }
+      .section-title {
+        font-weight: bold;
+        margin-top: 15px;
+        margin-bottom: 10px;
+        color: #666;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+      }
+      img {
+        max-width: 200px;
+      }
+    </style>
   </head>
-
-  <style>
-    body {
-      background-color: #f6f5f3;
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: "Open Sans", sans-serif;
-    }
-
-    header {
-      background-color: #f29200;
-      padding: 24px 35px;
-      font-size: 24px;
-    }
-    form {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 32px;
-      padding: 10%;
-      padding-top: 30px;
-    }
-
-    #resultContainer {
-      font-size: 32px;
-    }
-    button {
-      background-color: #f29200;
-      padding: 16px;
-      border-radius: 10px;
-      font-size: 20px;
-      width: 300px;
-    }
-
-    input {
-      font-size: 20px;
-      padding: 5px;
-      width: 100%;
-      width: 300px;
-    }
-    .group label {
-      display: block;
-      margin-bottom: 8px;
-    }
-  </style>
-
   <body>
-    <header>Pulverbeschichten Rechner</header>
-    <form onsubmit="calculateCost(); return false;">
+    <img
+      src="https://optimas.de/media/4c/35/46/1704706907/optimas_logo.svg?ts=1732609513"
+      alt="Optimas"
+    />
+    <h1>Kostenaufstellung Rechner</h1>
+    <form id="calculatorForm" onsubmit="calculateCosts(event)">
+      <div class="section-title">Oberflächenbehandlung:</div>
       <div class="group">
-        <label for="powder">Pulvergewicht (g)</label>
-        <input
-          onclick="document.getElementById('powder').value = '';"
-          name="powder"
-          id="powder"
-          required
-          type="number"
-          step="0.01"
-          value="100"
-        />
+        <label for="strahlen">Strahlen in Minuten:</label>
+        <input type="number" id="strahlen" step="0.01" value="1" required />
       </div>
       <div class="group">
-        <label for="workTime">Arbeitszeit (Minuten)</label>
-        <input
-          onclick="document.getElementById('workTime').value = '';"
-          name="workTime"
-          id="workTime"
-          type="number"
-          value="30"
-        />
+        <label for="waschen">Waschen in Minuten:</label>
+        <input type="number" id="waschen" step="0.01" value="1" required />
+      </div>
+
+      <div class="section-title">Pulvern:</div>
+      <div class="group">
+        <label for="material">Material in Kilogramm:</label>
+        <input type="number" id="material" step="0.01" value="1" required />
       </div>
       <div class="group">
-        <label for="oven">Ofen (Prozent)</label>
-        <input
-          onclick="document.getElementById('oven').value = '';"
-          name="oven"
-          id="oven"
-          type="number"
-          value="50"
-        />
+        <label for="arbeit">Arbeit in Minuten:</label>
+        <input type="number" id="arbeit" step="0.01" value="1" required />
       </div>
-      <button>Berechnen</button>
-      <div id="resultContainer"></div>
+
+      <div class="section-title">Einbrennen:</div>
+      <div class="group">
+        <label for="ofen">Ofenfüllung in %:</label>
+        <input type="number" id="ofen" step="0.01" value="1" required />
+      </div>
+
+      <button type="submit">Berechnen</button>
     </form>
 
+    <div id="resultContainer"></div>
+
     <script>
-      function calculateCost() {
-        const powderWeight = +document.getElementById("powder").value;
-        const workTimeInMinutes = +document.getElementById("workTime").value;
-        const ovenPercentage = +document.getElementById("oven").value;
-        const standardOvenTimeInMinutes = 35;
-        const price = 13; // Preis powder kg
-        const powderCostPerGram = price / 1000;
-        const hourlyRate = 1.08; // Euro pe minut
-        const ovenCostAt100Percent = 35; // Euro pe 100% capacitate cuptor
-        const ovenTimeInMinutes =
-          standardOvenTimeInMinutes * (ovenPercentage / 100);
-        const ovenCost = (ovenCostAt100Percent / 100) * ovenPercentage;
-        const powderCost = powderWeight * powderCostPerGram;
-        const workCost = workTimeInMinutes * hourlyRate;
-
-        const totalCost = powderCost + workCost + ovenCost;
-
-        document.getElementById(
-          "resultContainer"
-        ).innerHTML = `Kosten: ${totalCost.toFixed(2)} €`;
+      // Helper function for precise rounding
+      function round(num) {
+        return Number((Math.round(num * 100) / 100).toFixed(2));
       }
+
+      // Constants
+      const COST_FACTORS = {
+        strahlen: 2.4,
+        waschen: 1.2,
+        material: 15.7,
+        arbeit: 1.2,
+        ofenProzent: 0.48,
+      };
+
+      const MINDERMENGEN = 15.0;
+      const MINDER_NETTO = 50.0;
+      const VAT_RATE = 0.19;
+
+      function calculateCosts(event) {
+        event.preventDefault();
+
+        // Get input values
+        const inputs = {
+          strahlen: parseFloat(document.getElementById("strahlen").value) || 0,
+          waschen: parseFloat(document.getElementById("waschen").value) || 0,
+          material: parseFloat(document.getElementById("material").value) || 0,
+          arbeit: parseFloat(document.getElementById("arbeit").value) || 0,
+          ofen: parseFloat(document.getElementById("ofen").value) || 0,
+        };
+
+        // Calculate individual costs
+        const costStrahlen = round(inputs.strahlen * COST_FACTORS.strahlen);
+        const costWaschen = round(inputs.waschen * COST_FACTORS.waschen);
+        const costMaterial = round(inputs.material * COST_FACTORS.material);
+        const costArbeit = round(inputs.arbeit * COST_FACTORS.arbeit);
+        const costOfen = round(inputs.ofen * COST_FACTORS.ofenProzent);
+
+        // Calculate totals
+        const summe = round(
+          costStrahlen + costWaschen + costMaterial + costArbeit + costOfen
+        );
+        const netto =
+          summe < MINDER_NETTO ? round(summe + MINDERMENGEN) : summe;
+        const mwst = round(netto * VAT_RATE);
+        const brutto = round(netto + mwst);
+
+        // Display results
+        document.getElementById("resultContainer").innerHTML = `
+          <div class="section-title">Oberflächenbehandlung:</div>
+          <div class="result-row">
+            <span>Strahlen (${inputs.strahlen} min):</span>
+            <span>${costStrahlen.toFixed(2)} €</span>
+          </div>
+          <div class="result-row">
+            <span>Waschen (${inputs.waschen} min):</span>
+            <span>${costWaschen.toFixed(2)} €</span>
+          </div>
+
+          <div class="section-title">Pulvern:</div>
+          <div class="result-row">
+            <span>Material (${inputs.material} kg):</span>
+            <span>${costMaterial.toFixed(2)} €</span>
+          </div>
+          <div class="result-row">
+            <span>Arbeit (${inputs.arbeit} min):</span>
+            <span>${costArbeit.toFixed(2)} €</span>
+          </div>
+
+          <div class="section-title">Einbrennen:</div>
+          <div class="result-row">
+            <span>Ofenfüllung (${inputs.ofen}%):</span>
+            <span>${costOfen.toFixed(2)} €</span>
+          </div>
+
+          <div class="result-row total">
+            <span>Summe:</span>
+            <span>${summe.toFixed(2)} €</span>
+          </div>
+          <div class="result-row">
+            <span>Mindermengenzuschlag:</span>
+            <span>${(summe < MINDER_NETTO ? MINDERMENGEN : 0).toFixed(
+              2
+            )} €</span>
+          </div>
+          <div class="result-row total">
+            <span>Netto:</span>
+            <span>${netto.toFixed(2)} €</span>
+          </div>
+          <div class="result-row">
+            <span>MwSt. 19%:</span>
+            <span>${mwst.toFixed(2)} €</span>
+          </div>
+          <div class="result-row total">
+            <span>Brutto:</span>
+            <span>${brutto.toFixed(2)} €</span>
+          </div>
+        `;
+      }
+
+      // Calculate initial values on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        calculateCosts(new Event("submit"));
+      });
     </script>
   </body>
-  <footer></footer>
 </html>
